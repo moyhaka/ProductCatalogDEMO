@@ -13,35 +13,35 @@ namespace ProductCatalogDEMO.Controllers
     {
         public IActionResult Index()
         {
-            ProductsDAO products = new ProductsDAO();
+            ProductsDAO products = new();
             
             return View(products.GetAllProducts());
         }
 
         public IActionResult ShowDetails(int id)
         {
-            ProductsDAO products = new ProductsDAO();
+            ProductsDAO products = new();
             ProductModel foundProduct = products.GetProductById(id);
             return View(foundProduct);
         }
 
         public IActionResult Edit(int id)
         {
-            ProductsDAO products = new ProductsDAO();
+            ProductsDAO products = new();
             ProductModel foundProduct = products.GetProductById(id);
             return View("ShowEdit", foundProduct);
         }
 
         public IActionResult ProcessEdit(ProductModel product)
         {
-            ProductsDAO products = new ProductsDAO();
+            ProductsDAO products = new();
             products.Update(product);
             return View("Index", products.GetAllProducts());
         }
 
         public IActionResult Delete(int Id)
         {
-            ProductsDAO products = new ProductsDAO();
+            ProductsDAO products = new();
             ProductModel product = products.GetProductById(Id);
             products.Delete(product);
             return View("Index", products.GetAllProducts());
@@ -50,7 +50,7 @@ namespace ProductCatalogDEMO.Controllers
 
         public IActionResult SearchResult(string searchTerm)
         {
-            ProductsDAO products = new ProductsDAO();
+            ProductsDAO products = new();
 
             List<ProductModel> productList = products.SearchProducts(searchTerm);
             return View( "index", productList);
@@ -68,7 +68,7 @@ namespace ProductCatalogDEMO.Controllers
 
         public IActionResult Create(int id)
         {
-            ProductsDAO products = new ProductsDAO();
+            ProductsDAO products = new ();
             ProductModel foundProduct = products.GetProductById(id);
             return View("ShowCreate", foundProduct);
         }
@@ -76,7 +76,7 @@ namespace ProductCatalogDEMO.Controllers
 
         public IActionResult ProcessCreate(ProductModel product)
         {
-            ProductsDAO products = new ProductsDAO();
+            ProductsDAO products = new();
             //insert instead
             products.Insert(product);
             return View("Index", products.GetAllProducts());
