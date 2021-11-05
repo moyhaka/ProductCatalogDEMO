@@ -1,0 +1,24 @@
+﻿@model ProductCatalogDEMO.Models.ProductModel
+
+@{ 
+    var s = Model.Name;
+    var firstWord = s.IndexOf(" ") > -1 ? s.Substring(0, s.IndexOf(" ")) : s;
+}
+
+
+
+<div class="card" style="width: 18rem;">
+    <img src="https://loremflickr.com/g/150/150/@firstWord?lock=@Model.Id" class="card-img-top" alt="Card image cap">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+        <p class="card-text">@Html.DisplayFor(m => Model.Price)</p>
+        <p class="card-text">@Model.Description</p>
+        <a href="/product/ShowDetails/@Model.Id" class="btn btn-primary">Show Details</a>
+        <a href="/product/Edit/@Model.Id" class="btn btn-dark">Edit</a>
+        <a href="/product/Delete/@Model.Id" class="btn btn-danger">Delete</a>
+        <!-- Button trigger modal -->
+        <button value="@Model.Id" type="button" class="btn btn-primary edit-product-button" data-toggle="modal" data-target="#editModal">
+            Modal Edit
+        </button>
+    </div>
+</div>

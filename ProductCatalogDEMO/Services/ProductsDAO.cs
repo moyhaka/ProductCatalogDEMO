@@ -16,48 +16,52 @@ namespace ProductCatalogDEMO.Services
             int newIdNumber = -1;
 
             string sqlStatement = "DELETE FROM dbo.Products Where Id=@Id";
-            using SqlConnection conn = new(connStr);
-            SqlCommand command = new(sqlStatement, conn);
-            command.Parameters.AddWithValue("@Id", product.Id);
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlCommand command = new SqlCommand(sqlStatement, conn);
+                command.Parameters.AddWithValue("@Id", product.Id);
 
-            try
-            {
-                conn.Open();
-                newIdNumber = Convert.ToInt32(command.ExecuteScalar());
+                try
+                {
+                    conn.Open();
+                    newIdNumber = Convert.ToInt32(command.ExecuteScalar());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                return newIdNumber;
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return newIdNumber;
         }
 
         public List<ProductModel> GetAllProducts()
         {
-            List<ProductModel> foundProducts = new();
+            List<ProductModel> foundProducts = new List<ProductModel>();
 
             string sqlStatement = "SELECT * FROM dbo.Products";
-            using SqlConnection conn = new(connStr);
-            SqlCommand command = new(sqlStatement, conn);
-
-            try
+            using (SqlConnection conn = new SqlConnection(connStr))
             {
+                SqlCommand command = new SqlCommand(sqlStatement, conn);
 
-                conn.Open();
-
-                //Get all data with a reader
-                SqlDataReader rd = command.ExecuteReader();
-
-                while (rd.Read())
+                try
                 {
-                    foundProducts.Add(new ProductModel { Id = (int)rd[0], Name = (string)rd[1], Price = (decimal)rd[2], Description = (string)rd[3] });
+
+                    conn.Open();
+
+                    //Get all data with a reader
+                    SqlDataReader rd = command.ExecuteReader();
+
+                    while (rd.Read())
+                    {
+                        foundProducts.Add(new ProductModel { Id = (int)rd[0], Name= (string)rd[1], Price = (decimal)rd[2], Description = (string)rd[3] });
+                    }
                 }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                return foundProducts;
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return foundProducts;
 
         }
 
@@ -66,26 +70,28 @@ namespace ProductCatalogDEMO.Services
             ProductModel foundProduct = null;
 
             string sqlStatement = "SELECT * FROM dbo.Products WHERE Id=@Id";
-            using SqlConnection conn = new(connStr);
-            SqlCommand command = new(sqlStatement, conn);
-            command.Parameters.AddWithValue("@Id", id);
-            try
+            using (SqlConnection conn = new SqlConnection(connStr))
             {
-                conn.Open();
-
-                //Get all data with a reader
-                SqlDataReader rd = command.ExecuteReader();
-
-                while (rd.Read())
+                SqlCommand command = new SqlCommand(sqlStatement, conn);
+                command.Parameters.AddWithValue("@Id",id);
+                try
                 {
-                    foundProduct = new ProductModel { Id = (int)rd[0], Name = (string)rd[1], Price = (decimal)rd[2], Description = (string)rd[3] };
+                    conn.Open();
+
+                    //Get all data with a reader
+                    SqlDataReader rd = command.ExecuteReader();
+
+                    while (rd.Read())
+                    {
+                        foundProduct = new ProductModel { Id = (int)rd[0], Name = (string)rd[1], Price = (decimal)rd[2], Description = (string)rd[3] };
+                    }
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                return foundProduct;
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return foundProduct;
 
         }
 
@@ -94,51 +100,55 @@ namespace ProductCatalogDEMO.Services
             int newIdNumber = 1;
 
             string sqlStatement = "INSERT INTO dbo.Products (Name, Price, Description) VALUES (@Name, @Price, @Description)";
-            using SqlConnection conn = new(connStr);
-            SqlCommand command = new(sqlStatement, conn);
-            command.Parameters.AddWithValue("@Name", product.Name);
-            command.Parameters.AddWithValue("@Price", product.Price);
-            command.Parameters.AddWithValue("@Description", product.Description);
-            command.Parameters.AddWithValue("@Id", product.Id);
-
-            try
+            using (SqlConnection conn = new SqlConnection(connStr))
             {
-                conn.Open();
+                SqlCommand command = new SqlCommand(sqlStatement, conn);
+                command.Parameters.AddWithValue("@Name", product.Name);
+                command.Parameters.AddWithValue("@Price", product.Price);
+                command.Parameters.AddWithValue("@Description", product.Description);
+                command.Parameters.AddWithValue("@Id", product.Id);
 
-                newIdNumber = Convert.ToInt32(command.ExecuteScalar());
+                try
+                {
+                    conn.Open();
+
+                    newIdNumber = Convert.ToInt32(command.ExecuteScalar());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                return newIdNumber;
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return newIdNumber;
         }
 
         public List<ProductModel> SearchProducts(string searchTerm)
         {
-            List<ProductModel> foundProducts = new();
+            List<ProductModel> foundProducts = new List<ProductModel>();
 
             string sqlStatement = "SELECT * FROM dbo.Products WHERE Name LIKE @Name";
-            using SqlConnection conn = new(connStr);
-            SqlCommand command = new(sqlStatement, conn);
-            command.Parameters.AddWithValue("@Name", '%' + searchTerm + '%');
-            try
+            using (SqlConnection conn = new SqlConnection(connStr))
             {
-                conn.Open();
-
-                //Get all data with a reader
-                SqlDataReader rd = command.ExecuteReader();
-
-                while (rd.Read())
+                SqlCommand command = new SqlCommand(sqlStatement, conn);
+                command.Parameters.AddWithValue("@Name", '%' + searchTerm + '%');
+                try
                 {
-                    foundProducts.Add(new ProductModel { Id = (int)rd[0], Name = (string)rd[1], Price = (decimal)rd[2], Description = (string)rd[3] });
+                    conn.Open();
+
+                    //Get all data with a reader
+                    SqlDataReader rd = command.ExecuteReader();
+
+                    while (rd.Read())
+                    {
+                        foundProducts.Add(new ProductModel { Id = (int)rd[0], Name = (string)rd[1], Price = (decimal)rd[2], Description = (string)rd[3] });
+                    }
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                return foundProducts;
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return foundProducts;
         }
 
         public int Update(ProductModel product)
@@ -146,24 +156,26 @@ namespace ProductCatalogDEMO.Services
             int newIdNumber = -1;
 
             string sqlStatement = "UPDATE dbo.Products SET Name=@Name, Price =@Price, Description=@Description WHERE Id=@Id";
-            using SqlConnection conn = new(connStr);
-            SqlCommand command = new(sqlStatement, conn);
-            command.Parameters.AddWithValue("@Name", product.Name);
-            command.Parameters.AddWithValue("@Price", product.Price);
-            command.Parameters.AddWithValue("@Description", product.Description);
-            command.Parameters.AddWithValue("@Id", product.Id);
-
-            try
+            using (SqlConnection conn = new SqlConnection(connStr))
             {
-                conn.Open();
+                SqlCommand command = new SqlCommand(sqlStatement, conn);
+                command.Parameters.AddWithValue("@Name", product.Name);
+                command.Parameters.AddWithValue("@Price", product.Price); 
+                command.Parameters.AddWithValue("@Description", product.Description); 
+                command.Parameters.AddWithValue("@Id", product.Id);
 
-                newIdNumber = Convert.ToInt32(command.ExecuteScalar());
+                try
+                {
+                    conn.Open();
+
+                    newIdNumber = Convert.ToInt32(command.ExecuteScalar());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                return newIdNumber;
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return newIdNumber;
         }
     }
 }
