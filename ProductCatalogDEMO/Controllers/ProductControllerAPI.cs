@@ -7,6 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+/**
+ *  
+ */
+
 namespace ProductCatalogDEMO.Controllers
 {
     [ApiController]
@@ -37,22 +41,13 @@ namespace ProductCatalogDEMO.Controllers
             return products.GetProductById(product.Id);
         }
 
-        /*
 
-        public IActionResult Edit(int id)
-        {
-            ProductsDAO products = new ProductsDAO();
-            ProductModel foundProduct = products.GetProductById(id);
-            return View("ShowEdit", foundProduct);
-        }
-*/
         [HttpDelete("Delete/{Id}")]
         public ActionResult <int> Delete(int Id)
         {
             ProductsDAO products = new ProductsDAO();
             ProductModel product = products.GetProductById(Id);
 
-            //behöver skriva en ny Delete metod - är nog enklast så.
             int success = products.Delete(product);
             Console.WriteLine(success);
             return success;
